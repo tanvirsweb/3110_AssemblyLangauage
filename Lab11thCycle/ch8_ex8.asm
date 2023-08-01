@@ -22,15 +22,17 @@ MAIN PROC
     INT 21H 
     
     LEA DX,ARR
-    MOV AH,10
+    MOV AH,10 
+    MOV ARR,100
     INT 21H;INPUT STRING UNTIL CARRIAGE RETURN 0DH
+        
     
     LEA DX,MSG_REV
     MOV AH,9
     INT 21H
     
     LEA SI,ARR;ADDRESS 1ST ELEMENT OF ARRAY
-    ADD SI,2
+    ADD SI,2;IN Arr[0]=ARRAY SIZE,Arr[1]=COUNT OF CHAR.
     MOV CNT_V,0;NO OF VOWEL=0
     
     
@@ -45,7 +47,7 @@ MAIN PROC
      REV_WORD:
         MOV AL,[SI]                          
         CMP AL,' '; AH=0 & AL=' '
-        JE END_REVW
+        JE END_REVW        
                    
         MOV AL,[SI]
         CMP AL,0DH
@@ -79,9 +81,14 @@ MAIN PROC
      INC_VOWEL:
         INC CNT_V
                       
-     CONTINUE_LOOP:
-     MOV DL,AL
+     CONTINUE_LOOP:    
+     MOV DL,AL     
+     CMP DL,'a'
+     JL L1
+     CMP DL,'z'
+     JG L1
      SUB DL,32
+     L1:
      MOV AH,2
      INT 21H
      
@@ -113,6 +120,6 @@ MAIN PROC
     INT 21H
     MAIN ENDP
 END MAIN
-;input a line: this is a test
+;input a line: this is a test (END WITH SPACE,enter)
 ;output: SIHT SI A TSET
 ;no of vowels: 4
